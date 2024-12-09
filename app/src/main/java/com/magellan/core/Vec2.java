@@ -1,4 +1,4 @@
-package com.magellan.physics;
+package com.magellan.core;
 
 public class Vec2 {
     private int x;
@@ -48,5 +48,21 @@ public class Vec2 {
 
     public Vec2 scale(int scalar) {
         return new Vec2(x * scalar, y * scalar);
+    }
+
+    public boolean isUp() {
+        return y < 0;
+    }
+
+    public boolean isDown() {
+        return y > 0;
+    }
+
+    public boolean isLeft() {
+        return x < 0;
+    }
+
+    public boolean isRight() {
+        return x > 0;
     }
 }

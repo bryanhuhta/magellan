@@ -6,5 +6,5 @@ import com.magellan.core.KeyHandler;
 
 public interface Entity {
     void update(KeyHandler keyHandler);
-    void render(Graphics2D graphics);
+    void render(Graphics2D graphics, int tileSizeX, int tileSizeY);
 }

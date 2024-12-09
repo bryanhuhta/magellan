@@ -1,17 +1,24 @@
 package com.magellan.entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+
+import com.magellan.asset.Sprite;
 import com.magellan.core.KeyCode;
 import com.magellan.core.KeyHandler;
-import com.magellan.physics.Vec2;
+import com.magellan.core.Vec2;
 
 public class Player implements Entity {
     private Vec2 position;
+    private Sprite[] sprites;
+
     private static final int SPEED = 4;
 
-    public Player(Vec2 position) {
+    public Player(Vec2 position, Sprite[] sprites) {
         this.position = position;
+        this.sprites = sprites;
     }
 
     @Override
@@ -38,8 +45,22 @@ public class Player implements Entity {
     }
 
     @Override
-    public void render(Graphics2D graphics) {
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(position.getX(), position.getY(), 50, 50);
+    public void render(Graphics2D graphics, int tileSizeX, int tileSizeY) {
+        BufferedImage sprite;
+        if (position.isDown()) {
+            sprite = sprites[1].getImage();
+        } else if (position.isUp()) {
+            sprite = sprites[4].getImage();
+        } else if (position.isLeft()) {
+            sprite = sprites[7].getImage();
+        } else {
+            sprite = sprites[10].getImage();
+        }
+
+        // Set rendering hints for better scaling quality
+        // graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        // graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        graphics.drawImage(sprite, position.getX(), position.getY(), tileSizeX, tileSizeY, null);
     }
 }

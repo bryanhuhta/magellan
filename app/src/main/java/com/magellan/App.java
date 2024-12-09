@@ -7,14 +7,24 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import com.magellan.asset.AssetManager;
 import com.magellan.core.KeyHandler;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Logger logger = configureLogger();
         KeyHandler keyHandler = new KeyHandler();
 
-        Game game = new Game(logger, keyHandler);
+        AssetManager assetManager;
+        try {
+            assetManager = new AssetManager("assets");
+        } catch (Exception e) {
+            logger.severe("Failed to load assets: " + e.getMessage());
+            throw e;
+        }
+        logger.info(assetManager.basePath());
+
+        Game game = new Game(logger, keyHandler, assetManager);
         game.run();
     }
 
