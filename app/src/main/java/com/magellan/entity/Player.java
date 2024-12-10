@@ -1,10 +1,7 @@
 package com.magellan.entity;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-
 import com.magellan.asset.Sprite;
 import com.magellan.core.KeyCode;
 import com.magellan.core.KeyHandler;
@@ -56,10 +53,6 @@ public class Player implements Entity {
         } else {
             sprite = sprites[10].getImage();
         }
-
-        // Set rendering hints for better scaling quality
-        // graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        // graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         graphics.drawImage(sprite, position.getX(), position.getY(), tileSizeX, tileSizeY, null);
     }
