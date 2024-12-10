@@ -29,23 +29,29 @@ public class Player implements Entity {
     @Override
     public void update(KeyHandler keyHandler) {
         Vec2 dir = Vec2.origin();
+        Vec2 oldDir = new Vec2(direction);
 
         if (keyHandler.isKeyPressed(KeyCode.UP)) {
-            spriteIndex = direction.isUp() ? spriteIndex+1 : 0;
             dir = dir.add(Vec2.up());
             direction = Vec2.up();
         } else if (keyHandler.isKeyPressed(KeyCode.DOWN)) {
-            spriteIndex = direction.isDown() ? spriteIndex+1 : 0;
             dir = dir.add(Vec2.down());
             direction = Vec2.down();
         } else if (keyHandler.isKeyPressed(KeyCode.LEFT)) {
-            spriteIndex = direction.isLeft() ? spriteIndex+1 : 0;
             dir = dir.add(Vec2.left());
             direction = Vec2.left();
         } else if (keyHandler.isKeyPressed(KeyCode.RIGHT)) {
-            spriteIndex = direction.isRight() ? spriteIndex+1 : 0;
             dir = dir.add(Vec2.right());
             direction = Vec2.right();
+        }
+
+        if (keyHandler.isAnyKeyPressed(KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT)) {
+            // If we changed directions, force an update. Otherwise, continue
+            // with the animation loop.
+            boolean force = !direction.equals(oldDir);
+            updateAnimatedSpriteIndex(force);
+        } else {
+            updateStillSpriteIndex();
         }
 
         this.position = position.add(dir.scale(SPEED));
@@ -53,32 +59,43 @@ public class Player implements Entity {
 
     @Override
     public void render(Graphics2D graphics, int tileSizeX, int tileSizeY) {
-        BufferedImage sprite = sprites[(spriteIndex % 3)].getImage();
+        BufferedImage sprite = sprites[spriteIndex].getImage();
+        graphics.drawImage(sprite, position.getX(), position.getY(), tileSizeX, tileSizeY, null);
+    }
 
-        if (spriteCounter > 10) {
-            spriteCounter = 0;
-
-            if (direction.isDown()) {
-                spriteIndex = spriteIndex >= 0 && spriteIndex < 3
-                ? (spriteIndex+1) % 3
-                : 0;
-            } else if (direction.isUp()) {
-                spriteIndex = spriteIndex >= 3 && spriteIndex < 6
-                    ? (spriteIndex+1) % 3 + 3
-                    : 3;
-            } else if (direction.isLeft()) {
-                spriteIndex = spriteIndex >= 6 && spriteIndex < 9
-                    ? (spriteIndex+1) % 3 + 6
-                    : 6;
-            } else {
-                spriteIndex = spriteIndex >= 9 && spriteIndex < 12
-                    ? (spriteIndex+1) % 3 + 9
-                    : 9;
-            }
-        } else {
+    private void updateAnimatedSpriteIndex(boolean force) {
+        if (spriteCounter < (SPEED * 2) && !force) {
             spriteCounter++;
+            return;
         }
 
-        graphics.drawImage(sprite, position.getX(), position.getY(), tileSizeX, tileSizeY, null);
+        int offset = 0;
+        if (direction.isDown()) {
+            offset = 0;
+        } else if (direction.isUp()) {
+            offset = 3;
+        } else if (direction.isLeft()) {
+            offset = 6;
+        } else if (direction.isRight()) {
+            offset = 9;
+        }
+
+        final int spriteCount = 3;
+        spriteIndex = spriteIndex >= offset && spriteIndex < offset + spriteCount
+            ? ((spriteIndex+1) % spriteCount) + offset
+            : offset;
+        spriteCounter = 0;
+    }
+
+    private void updateStillSpriteIndex() {
+        if (direction.isDown()) {
+            spriteIndex = 1;
+        } else if (direction.isUp()) {
+            spriteIndex = 4;
+        } else if (direction.isLeft()) {
+            spriteIndex = 7;
+        } else if (direction.isRight()) {
+            spriteIndex = 10;
+        }
     }
 }

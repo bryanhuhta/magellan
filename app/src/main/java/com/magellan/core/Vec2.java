@@ -65,4 +65,28 @@ public class Vec2 {
     public boolean isRight() {
         return x > 0;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + x;
+        result = prime * result + y;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        Vec2 other = (Vec2) obj;
+        return (x == other.x) && (y == other.y);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

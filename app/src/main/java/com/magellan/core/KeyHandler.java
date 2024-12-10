@@ -23,6 +23,18 @@ public class KeyHandler implements KeyListener {
         return pressed;
     }
 
+    public boolean isAnyKeyPressed(KeyCode ...codes) {
+        boolean pressed = false;
+        for (KeyCode code : codes) {
+            if (keys.getOrDefault(code, false)) {
+                pressed = true;
+                break;
+            }
+        }
+
+        return pressed;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {}
 
