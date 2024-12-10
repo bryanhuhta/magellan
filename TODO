@@ -1,9 +1,8 @@
 - Improve sprite sheet loading
   * Ideally we want to be able to name sequences, (e.g. player_left, player_down, player_idle) instead of hard coding indexes into the sprite sheet
 
-- Force the character to walk on the x-y grid (aka manhattan distances)
 - Remove background from sprite sheet
 - Animate the walking sequence
 - Enforce window boundaries
 - Main menu?
-- Make character remember walking direction better
+- make characters only walk on tiles (i.e. character cannot be between two tiles)
